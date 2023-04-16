@@ -1,4 +1,4 @@
-h2/data/**
+h2/**
 .jqwik-database
 .DS_Store
 HELP.md
