@@ -11,11 +11,16 @@ import br.com.deveficiente.ingressos.empresas.Empresa;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
 
-public class MyCustomResolver implements HandlerMethodArgumentResolver {
+/**
+ * Classe criada enquanto não suportamos uma autorizacao legalzona hehe
+ * @author albertoluizsouza
+ *
+ */
+public class MeuFakeAuthenticatedPrincipal implements HandlerMethodArgumentResolver {
 
 	private ApplicationContext context;
 
-	public MyCustomResolver(ApplicationContext context) {
+	public MeuFakeAuthenticatedPrincipal(ApplicationContext context) {
 		this.context = context;
 	}
 
