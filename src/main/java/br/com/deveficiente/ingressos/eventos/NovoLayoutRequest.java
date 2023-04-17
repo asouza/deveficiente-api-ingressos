@@ -16,12 +16,15 @@ public class NovoLayoutRequest {
 	private Set<@NotBlank @Pattern(regexp = "[a-zA-Z-]+") String> metaInformacoesAssento = new HashSet<>();
 	@NotNull
 	private Boolean aceitaOverbooking;
+	@NotBlank
+	private String nome;
 
 	public NovoLayoutRequest(@Positive int quantidadeAssentos,
-			Boolean aceitaOverbooking) {
+			Boolean aceitaOverbooking,String nome) {
 		super();
 		this.quantidadeAssentos = quantidadeAssentos;
 		this.aceitaOverbooking = aceitaOverbooking;
+		this.nome = nome;
 	}
 
 	public void setMetaInformacoesAssento(Set<String> metaInformacoesAssento) {
@@ -33,7 +36,7 @@ public class NovoLayoutRequest {
 			//aqui podia ser alguma meta-informacao configurada
 			metaInformacoesAssento.add("geral");
 		}
-		return new LayoutEvento(quantidadeAssentos,aceitaOverbooking,metaInformacoesAssento);
+		return new LayoutEvento(empresa,quantidadeAssentos,aceitaOverbooking,metaInformacoesAssento,nome);
 	}
 
 }
