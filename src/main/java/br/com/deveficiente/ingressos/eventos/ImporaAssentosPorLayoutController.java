@@ -44,9 +44,13 @@ public class ImporaAssentosPorLayoutController {
 			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 		}
 		
-		Collection<Assento> assentos = request.toAssentos(layout);
-		assentos.forEach(manager :: persist);
-		
+		layout.adicionaAssentos(request :: toAssentos);
+		/*
+		 * #naoSeiExplicar: Eu já passei por isso e continuo sem saber explicar. Pq eu preciso chamar esse merge aqui? 
+		 * Quando comita não deveria mergear automaticamente?
+		 */
+		manager.merge(layout);
+				
 		return ResponseEntity.ok("Assentos importados");
 	}
 }

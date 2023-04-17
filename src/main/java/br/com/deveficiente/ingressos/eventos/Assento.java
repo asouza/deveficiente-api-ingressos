@@ -33,6 +33,11 @@ public class Assento {
 	@MapKeyColumn(name = "meta-informacao")
 	@Column(name = "valor")
 	private Map<String, String> valoresMetaInformacoesLayout = new HashMap<>();
+	
+	@Deprecated
+	public Assento() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public Assento(@Valid @NotNull LayoutEvento layout,
 			@Size(min = 1) Set<@Valid ImportaAssentoMetaInformacaoValorRequest> pares) {
@@ -88,6 +93,14 @@ public class Assento {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Assento [layout=" + layout.getNome() + ", valoresMetaInformacoesLayout="
+				+ valoresMetaInformacoesLayout + "]";
+	}
+	
+	
 	
 	
 

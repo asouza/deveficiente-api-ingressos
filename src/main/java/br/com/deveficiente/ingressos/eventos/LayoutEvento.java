@@ -1,16 +1,21 @@
 package br.com.deveficiente.ingressos.eventos;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 
 import org.springframework.util.Assert;
 
 import br.com.deveficiente.ingressos.empresas.Empresa;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -32,6 +37,8 @@ public class LayoutEvento {
 	private Empresa empresa;
 	@NotBlank
 	private String nome;
+	@OneToMany(mappedBy = "layout",cascade = {CascadeType.MERGE})
+	private Set<Assento> assentos = new HashSet<>();
 	
 	@Deprecated
 	public LayoutEvento() {
@@ -95,6 +102,18 @@ public class LayoutEvento {
 		} else if (!nome.equals(other.nome))
 			return false;
 		return true;
+	}
+
+	public void adicionaAssentos(Function<LayoutEvento, Collection<Assento>> produtorDeNovoasAssentos) {
+		Collection<Assento> novosAssentos = produtorDeNovoasAssentos.apply(this);
+		
+		novosAssentos.forEach(novoAssento -> {
+			Assert.state(this.assentos.add(novoAssento),"O assento em questão já foi cadastrado. Mais informações => "+novoAssento);
+		});
+	}
+
+	public String getNome() {
+		return nome;
 	}
 
 }
