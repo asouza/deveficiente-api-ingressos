@@ -21,23 +21,20 @@ public class ImporaAssentosPorLayoutController {
 
 	private EntityManager manager;
 	private AssentosUnicosValidator assentosUnicosValidator;
-//	private AssentosJaExistentesValidator assentosJaExistentesValidator;
-
-	/*
-	 * - nao pode ter assentos unicos - não pode adicionar de novo assento que
-	 * já existe
-	 */
+	private AssentosJaExistentesValidator assentosJaExistentesValidator;
 
 	public ImporaAssentosPorLayoutController(EntityManager manager,
-			AssentosUnicosValidator assentosUnicosValidator) {
+			AssentosUnicosValidator assentosUnicosValidator,
+			AssentosJaExistentesValidator assentosJaExistentesValidator) {
 		super();
 		this.manager = manager;
 		this.assentosUnicosValidator = assentosUnicosValidator;
+		this.assentosJaExistentesValidator = assentosJaExistentesValidator;
 	}
 
 	@InitBinder
 	public void init(WebDataBinder binder) {
-		binder.addValidators(assentosUnicosValidator);
+		binder.addValidators(assentosUnicosValidator,assentosJaExistentesValidator);
 	}
 
 	@PostMapping("/api/eventos/layout/{idLayout}/importa-assentos")

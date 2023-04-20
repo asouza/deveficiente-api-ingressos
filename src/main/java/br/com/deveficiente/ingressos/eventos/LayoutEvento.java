@@ -2,6 +2,7 @@ package br.com.deveficiente.ingressos.eventos;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -107,6 +108,11 @@ public class LayoutEvento {
 	public void adicionaAssentos(Function<LayoutEvento, Collection<Assento>> produtorDeNovoasAssentos) {
 		Collection<Assento> novosAssentos = produtorDeNovoasAssentos.apply(this);
 		
+		/*
+		 * aqui eu não chamo o método que busca repetido interno para não
+		 * fazer um loop inteiro na colecao antes de adicionar, já que podemos
+		 * ir adicionando e testando
+		 */
 		novosAssentos.forEach(novoAssento -> {
 			Assert.state(this.assentos.add(novoAssento),"O assento em questão já foi cadastrado. Mais informações => "+novoAssento);
 		});
@@ -114,6 +120,22 @@ public class LayoutEvento {
 
 	public String getNome() {
 		return nome;
+	}
+
+	/**
+	 * 
+	 * @param assentosASeremAdicionados colecao de assentos que querem ser adicionados
+	 * @return
+	 */
+	public Collection<Assento> buscaAssentosExistentes(
+			Collection<Assento> assentosASeremAdicionados) {
+		//preciso copiar pq eu não quero adicionar nada na colecao da referencia.
+		//ai fiz uma copia local e garanto nao alterar nada
+		HashSet<Assento> copiaDosAssentosExistes = new HashSet<>(this.assentos);
+		
+		return assentosASeremAdicionados.stream().filter(novoAssento -> {
+			return !copiaDosAssentosExistes.add(novoAssento);
+		}).toList();		
 	}
 
 }
