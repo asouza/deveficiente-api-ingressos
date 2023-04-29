@@ -107,6 +107,7 @@ public class LayoutEvento {
 
 	public void adicionaAssentos(Function<LayoutEvento, Collection<Assento>> produtorDeNovoasAssentos) {
 		Collection<Assento> novosAssentos = produtorDeNovoasAssentos.apply(this);
+		//checar se os assentos de fato pertencem ao layout corrente
 		
 		/*
 		 * aqui eu não chamo o método que busca repetido interno para não

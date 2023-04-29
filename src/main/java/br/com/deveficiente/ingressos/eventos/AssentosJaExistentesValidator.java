@@ -38,20 +38,9 @@ public class AssentosJaExistentesValidator implements Validator {
 		if (errors.hasErrors()) {
 			return;
 		}
-
-		// #post Acho que vale um post rápido dessa gambi
-		@SuppressWarnings("unchecked")
-		Map<String, String> pathVariables = (Map<String, String>) springWebRequest
-				.getAttribute(
-						"org.springframework.web.servlet.HandlerMapping.uriTemplateVariables");
-
-		String idLayout = pathVariables.get("idLayout");
-
-		Assert.state(Optional.ofNullable(idLayout).isPresent(),
-				"Esse validador precisa da variavel idLayout como pathvariable");
-
+		
 		LayoutEvento layout = manager.find(LayoutEvento.class,
-				Long.valueOf(idLayout));
+				RecuperaValorPathVariable.longValue(springWebRequest, "idLayout"));
 
 		Assert.state(Optional.ofNullable(layout).isPresent(),
 				"O id de layout passado não existe");

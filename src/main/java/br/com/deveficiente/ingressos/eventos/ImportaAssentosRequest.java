@@ -29,22 +29,34 @@ public class ImportaAssentosRequest {
 
 	public Collection<Assento> toAssentos(@Valid @NotNull LayoutEvento layout) {
 		Assert.notNull(layout, "O layout não pode ser nulo");
-		Assert.state(this.buscaAssentosRepetidos().isEmpty(),"Não deveria ter assentos repetidos neste ponto do código");
-		
+		Assert.state(this.buscaAssentosRepetidos().isEmpty(),
+				"Não deveria ter assentos repetidos neste ponto do código");
+
 		return novosAssentosRequest.stream().map(request -> {
 			return request.toAssento(layout);
 		}).toList();
 	}
 
+	public List<NovoAssentoRequest> getNovosAssentosRequest() {
+		return novosAssentosRequest;
+	}
+
 	public List<NovoAssentoRequest> buscaAssentosRepetidos() {
 		Set<NovoAssentoRequest> assentosUnicos = new HashSet<>();
-		
-		List<NovoAssentoRequest> repetidos = novosAssentosRequest.stream().filter(novoAssentoRequest -> {
-			return !assentosUnicos.add(novoAssentoRequest);
-		}).toList();
-		
-		System.out.println("Repetidos => "+repetidos);
+
+		List<NovoAssentoRequest> repetidos = novosAssentosRequest.stream()
+				.filter(novoAssentoRequest -> {
+					return !assentosUnicos.add(novoAssentoRequest);
+				}).toList();
+
+		System.out.println("Repetidos => " + repetidos);
 		return repetidos;
+	}
+
+	public Collection<String> getTodasMetaInformacoesDosAssentos() {
+		return this.novosAssentosRequest.stream()
+				.flatMap(assentoRequest -> assentoRequest.getPares().stream())
+				.map(par -> par.getMetaInformacao()).toList();
 	}
 
 }

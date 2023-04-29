@@ -2,6 +2,7 @@ package br.com.deveficiente.ingressos.compartilhado;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.MethodParameter;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -41,6 +42,8 @@ public class MeuFakeAuthenticatedPrincipal implements HandlerMethodArgumentResol
 		HttpServletRequest request = (HttpServletRequest) webRequest
 				.getNativeRequest();
 		String value = request.getHeader("empresa-id");
+		
+		Assert.hasText(value,"Precisa do header de id da empresa para usar o AuthenticatedPrincipal");
 		
 		EntityManager manager = context.getBean(EntityManager.class);
 		

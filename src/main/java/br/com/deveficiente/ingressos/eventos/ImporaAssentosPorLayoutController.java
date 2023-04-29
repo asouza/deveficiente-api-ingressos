@@ -22,19 +22,28 @@ public class ImporaAssentosPorLayoutController {
 	private EntityManager manager;
 	private AssentosUnicosValidator assentosUnicosValidator;
 	private AssentosJaExistentesValidator assentosJaExistentesValidator;
+	private MetaInformacoesPertencemAoLayoutValidator metaInformacoesPertencemAoLayoutValidator;
 
 	public ImporaAssentosPorLayoutController(EntityManager manager,
 			AssentosUnicosValidator assentosUnicosValidator,
-			AssentosJaExistentesValidator assentosJaExistentesValidator) {
+			AssentosJaExistentesValidator assentosJaExistentesValidator,
+			MetaInformacoesPertencemAoLayoutValidator metaInformacoesPertencemAoLayoutValidator) {
 		super();
 		this.manager = manager;
 		this.assentosUnicosValidator = assentosUnicosValidator;
 		this.assentosJaExistentesValidator = assentosJaExistentesValidator;
+		this.metaInformacoesPertencemAoLayoutValidator = metaInformacoesPertencemAoLayoutValidator;
 	}
 
 	@InitBinder
 	public void init(WebDataBinder binder) {
-		binder.addValidators(assentosUnicosValidator,assentosJaExistentesValidator);
+		/*
+		 * #paraPensar Aqui eu tive que organizar a ordem de execução dos validadores
+		 * porque em algum validador eu de fato instancio um novo assento. Só que quando 
+		 * um novo assento vai ser instanciado ele verifica se as meta informacoes 
+		 * batem com o layout
+		 */
+		binder.addValidators(assentosUnicosValidator,metaInformacoesPertencemAoLayoutValidator,assentosJaExistentesValidator);
 	}
 
 	@PostMapping("/api/eventos/layout/{idLayout}/importa-assentos")
