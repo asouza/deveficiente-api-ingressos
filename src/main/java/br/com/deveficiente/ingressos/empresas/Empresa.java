@@ -1,9 +1,17 @@
 package br.com.deveficiente.ingressos.empresas;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.util.Assert;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -14,6 +22,8 @@ public class Empresa {
 	private Long id;
 	@NotBlank
 	private String nome;
+	@OneToMany(mappedBy = "empresa", cascade = CascadeType.MERGE)
+	private Set<PlanoAssinatura> planos = new HashSet<>();
 
 	@Deprecated
 	public Empresa() {
@@ -53,6 +63,25 @@ public class Empresa {
 	@Override
 	public String toString() {
 		return "Empresa [id=" + id + ", nome=" + nome + "]";
+	}
+
+	public boolean existePlanoComoOpcaoPrimaria() {
+		verificaInvariante();
+		return planos.stream().filter(PlanoAssinatura::isOpcaoPrimaria)
+				.findFirst().isPresent();
+	}
+
+	private void verificaInvariante() {
+		long numeroDePlanosPrimarios = planos.stream()
+				.filter(PlanoAssinatura::isOpcaoPrimaria).count();
+		Assert.state(numeroDePlanosPrimarios <= 1,
+				"Por algum motivo do planeta existe mais de um plano como opcao primaria para a empresa "
+						+ this.nome);
+	}
+
+	public boolean existeAlgumPlano() {
+		verificaInvariante();
+		return planos.iterator().hasNext();
 	}
 
 }
