@@ -3,6 +3,7 @@ package br.com.deveficiente.ingressos.empresas;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 import org.springframework.util.Assert;
 
@@ -12,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -72,16 +74,33 @@ public class Empresa {
 	}
 
 	private void verificaInvariante() {
-		long numeroDePlanosPrimarios = planos.stream()
-				.filter(PlanoAssinatura::isOpcaoPrimaria).count();
-		Assert.state(numeroDePlanosPrimarios <= 1,
+		List<String> nomesPlanos = planos.stream()
+				.filter(PlanoAssinatura::isOpcaoPrimaria).map(PlanoAssinatura :: getNome).toList();
+		Assert.state(nomesPlanos.size() <= 1,
 				"Por algum motivo do planeta existe mais de um plano como opcao primaria para a empresa "
-						+ this.nome);
+						+ this.nome+". Os planos são:"+nomesPlanos);
 	}
 
 	public boolean existeAlgumPlano() {
 		verificaInvariante();
 		return planos.iterator().hasNext();
+	}
+
+	public PlanoAssinatura criaNovoPlano(
+			Function<Empresa, PlanoAssinatura> criadorPlano) {
+		verificaInvariante();
+
+		PlanoAssinatura novoPlano = criadorPlano.apply(this);
+		Assert.state(planos.add(novoPlano),"Não foi possível adicionar o novo plano. Provavalmente já existe outro igual. Detalhes do plano que falhou:"+novoPlano.getNome());
+		
+		verificaInvariante();
+		Assert.state(this.existePlanoComoOpcaoPrimaria(),"Precisa existir um plano como opcao primaria depois que cria um novo plano");		
+		
+		return novoPlano;
+	}
+	
+	public Long getId() {
+		return id;
 	}
 
 }

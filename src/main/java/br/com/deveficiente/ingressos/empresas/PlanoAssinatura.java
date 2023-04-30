@@ -81,6 +81,10 @@ public class PlanoAssinatura {
 		return opcaoPrimaria;
 	}
 	
+	public String getNome() {
+		return nome;
+	}
+	
 	
 
 }
