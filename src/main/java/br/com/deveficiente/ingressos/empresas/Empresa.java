@@ -67,34 +67,17 @@ public class Empresa {
 		return "Empresa [id=" + id + ", nome=" + nome + "]";
 	}
 
-	public boolean existePlanoComoOpcaoPrimaria() {
-		verificaInvariante();
-		return planos.stream().filter(PlanoAssinatura::isOpcaoPrimaria)
-				.findFirst().isPresent();
-	}
-
-	private void verificaInvariante() {
-		List<String> nomesPlanos = planos.stream()
-				.filter(PlanoAssinatura::isOpcaoPrimaria).map(PlanoAssinatura :: getNome).toList();
-		Assert.state(nomesPlanos.size() <= 1,
-				"Por algum motivo do planeta existe mais de um plano como opcao primaria para a empresa "
-						+ this.nome+". Os planos são:"+nomesPlanos);
-	}
 
 	public boolean existeAlgumPlano() {
-		verificaInvariante();
 		return planos.iterator().hasNext();
 	}
 
 	public PlanoAssinatura criaNovoPlano(
 			Function<Empresa, PlanoAssinatura> criadorPlano) {
-		verificaInvariante();
-
-		PlanoAssinatura novoPlano = criadorPlano.apply(this);
-		Assert.state(planos.add(novoPlano),"Não foi possível adicionar o novo plano. Provavalmente já existe outro igual. Detalhes do plano que falhou:"+novoPlano.getNome());
 		
-		verificaInvariante();
-		Assert.state(this.existePlanoComoOpcaoPrimaria(),"Precisa existir um plano como opcao primaria depois que cria um novo plano");		
+		PlanoAssinatura novoPlano = criadorPlano.apply(this);
+		
+		Assert.state(planos.add(novoPlano),"Não foi possível adicionar o novo plano. Provavalmente já existe outro igual. Detalhes do plano que falhou:"+novoPlano.getNome());
 		
 		return novoPlano;
 	}

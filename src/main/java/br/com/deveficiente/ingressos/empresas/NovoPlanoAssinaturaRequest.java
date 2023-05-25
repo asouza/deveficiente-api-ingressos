@@ -15,23 +15,14 @@ public class NovoPlanoAssinaturaRequest {
 	@Positive
 	private BigDecimal valor;
 
-	@NotNull
-	private Boolean opcaoPrimaria;
-
-	public NovoPlanoAssinaturaRequest(String nome, BigDecimal valor,
-			Boolean opcaoPrimaria) {
+	public NovoPlanoAssinaturaRequest(String nome, BigDecimal valor) {
 		super();
 		this.nome = nome;
 		this.valor = valor;
-		this.opcaoPrimaria = opcaoPrimaria;
 	}
 
 	public PlanoAssinatura toModel(Empresa empresa) {
-		return new PlanoAssinatura(empresa, nome, valor, opcaoPrimaria);
-	}
-
-	public boolean isOpcaoPrimaria() {
-		return opcaoPrimaria;
+		return new PlanoAssinatura(empresa, nome, valor);
 	}
 
 }

@@ -25,8 +25,6 @@ public class PlanoAssinatura {
 	@Positive
 	private BigDecimal valor;
 
-	private boolean opcaoPrimaria;
-	
 	@NotNull
 	@Valid
 	@ManyToOne
@@ -37,13 +35,11 @@ public class PlanoAssinatura {
 		// TODO Auto-generated constructor stub
 	}
 
-	public PlanoAssinatura(@NotNull @Valid Empresa empresa,@NotBlank String nome, @Positive BigDecimal valor,
-			boolean opcaoPrimaria) {
+	public PlanoAssinatura(@NotNull @Valid Empresa empresa,@NotBlank String nome, @Positive BigDecimal valor) {
 		super();
 		this.empresa = empresa;
 		this.nome = nome;
 		this.valor = valor;
-		this.opcaoPrimaria = opcaoPrimaria;
 	}
 
 	@Override
@@ -75,10 +71,6 @@ public class PlanoAssinatura {
 		} else if (!nome.equals(other.nome))
 			return false;
 		return true;
-	}
-	
-	public boolean isOpcaoPrimaria() {
-		return opcaoPrimaria;
 	}
 	
 	public String getNome() {
