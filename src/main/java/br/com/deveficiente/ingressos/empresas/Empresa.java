@@ -86,4 +86,8 @@ public class Empresa {
 		return id;
 	}
 
+	public String getNome() {
+		return this.nome;
+	}
+
 }

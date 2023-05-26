@@ -2,14 +2,21 @@ package br.com.deveficiente.ingressos.empresas;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
 
+import org.springframework.util.Assert;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -32,13 +39,17 @@ public class PlanoAssinatura {
 	@Valid
 	@ManyToOne
 	private Empresa empresa;
-	
+
+	@OneToMany(mappedBy = "plano", cascade = CascadeType.MERGE)
+	private Set<BeneficioPlano> beneficios = new HashSet<>();
+
 	@Deprecated
 	public PlanoAssinatura() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public PlanoAssinatura(@NotNull @Valid Empresa empresa,@NotBlank String nome, @Positive BigDecimal valor) {
+	public PlanoAssinatura(@NotNull @Valid Empresa empresa,
+			@NotBlank String nome, @Positive BigDecimal valor) {
 		super();
 		this.empresa = empresa;
 		this.nome = nome;
@@ -75,11 +86,18 @@ public class PlanoAssinatura {
 			return false;
 		return true;
 	}
-	
+
 	public String getNome() {
 		return nome;
 	}
-	
-	
+
+	public void adicionaBeneficio(
+			Function<PlanoAssinatura, BeneficioPlano> criadorBeneficio) {
+		BeneficioPlano novoBeneficio = criadorBeneficio.apply(this);
+		Assert.isTrue(this.beneficios.add(novoBeneficio),
+				"Já existe um beneficio de nome [" + novoBeneficio.getNome()
+						+ "] de mesmo para o plano [" + this.nome
+						+ "] da empresa [" + this.empresa.getNome() + "]");
+	}
 
 }
