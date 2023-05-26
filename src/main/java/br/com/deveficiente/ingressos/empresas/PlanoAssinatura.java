@@ -1,7 +1,10 @@
 package br.com.deveficiente.ingressos.empresas;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,8 +25,8 @@ public class PlanoAssinatura {
 	@NotBlank
 	private String nome;
 
-	@Positive
-	private BigDecimal valor;
+	@ElementCollection
+	private List<ValorPlano> valores = new ArrayList<>();
 
 	@NotNull
 	@Valid
@@ -39,7 +42,7 @@ public class PlanoAssinatura {
 		super();
 		this.empresa = empresa;
 		this.nome = nome;
-		this.valor = valor;
+		this.valores.add(new ValorPlano(valor));
 	}
 
 	@Override

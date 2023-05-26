@@ -12,11 +12,11 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
-public class PlanoAssinaturaController {
+public class NovoPlanoAssinaturaController {
 
 	private EntityManager manager;
 
-	public PlanoAssinaturaController(EntityManager manager) {
+	public NovoPlanoAssinaturaController(EntityManager manager) {
 		super();
 		this.manager = manager;
 	}
