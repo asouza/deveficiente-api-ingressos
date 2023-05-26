@@ -89,5 +89,9 @@ public class Empresa {
 	public String getNome() {
 		return this.nome;
 	}
+	
+	public boolean ehDonaDoPlano(PlanoAssinatura plano) {
+		return this.planos.contains(plano);
+	}
 
 }

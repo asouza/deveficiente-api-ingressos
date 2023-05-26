@@ -31,8 +31,13 @@ public class AdicionaBeneficioPlanoController {
 			@RequestBody @Validated NovoBeneficioPlanoRequest request) {
 
 		PlanoAssinatura plano = manager.find(PlanoAssinatura.class, idPlano);
+				
 		Optional.ofNullable(plano).orElseThrow(
 				() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		
+		if(!empresa.ehDonaDoPlano(plano)) {
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+		}
 
 		plano.adicionaBeneficio(request::toModel);
 		manager.merge(plano);

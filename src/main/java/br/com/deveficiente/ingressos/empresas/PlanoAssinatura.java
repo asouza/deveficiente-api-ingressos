@@ -2,8 +2,11 @@ package br.com.deveficiente.ingressos.empresas;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -98,6 +101,27 @@ public class PlanoAssinatura {
 				"Já existe um beneficio de nome [" + novoBeneficio.getNome()
 						+ "] de mesmo para o plano [" + this.nome
 						+ "] da empresa [" + this.empresa.getNome() + "]");
+	}
+
+	public BigDecimal getValorAtual() {
+		Assert.isTrue(this.valores.iterator().hasNext(),"Por algum motivo o plano ["+this.nome+"] está sem valor associado");
+		
+		return new LinkedList<>(this.valores).getLast().getValor();
+	}
+
+	/**
+	 * 
+	 * @return um mapa contendo as descricoes mapeadas pelo nome
+	 */
+	public Map<String, String> getMapaBeneficios() {		
+		HashMap<String, String> nomesEDescricoes = new HashMap<>();
+		this.beneficios.forEach(beneficio -> {
+			nomesEDescricoes.put(beneficio.getNome(), beneficio.getDescricao());
+		});
+		
+		return nomesEDescricoes;
+		
+		
 	}
 
 }

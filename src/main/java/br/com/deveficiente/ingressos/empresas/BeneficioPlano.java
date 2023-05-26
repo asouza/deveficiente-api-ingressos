@@ -68,6 +68,10 @@ public class BeneficioPlano {
 	public String getNome() {
 		return this.nome;
 	}
+
+	public String getDescricao() {
+		return this.descricao;
+	}
 	
 	
 
