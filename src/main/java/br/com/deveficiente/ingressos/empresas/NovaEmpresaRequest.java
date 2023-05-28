@@ -1,19 +1,22 @@
 package br.com.deveficiente.ingressos.empresas;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonCreator.Mode;
-
 import jakarta.validation.constraints.NotBlank;
 
 public class NovaEmpresaRequest {
 
 	@NotBlank
 	public final String nome;
+	@NotBlank
+	public final String emailContato;
 
-	@JsonCreator(mode = Mode.PROPERTIES)
-	public NovaEmpresaRequest(String nome) {
+	public NovaEmpresaRequest(String nome, String emailContato) {
 		super();
 		this.nome = nome;
+		this.emailContato = emailContato;
+	}
+
+	public Empresa toModel() {
+		return new Empresa(nome,emailContato);
 	}
 	
 	

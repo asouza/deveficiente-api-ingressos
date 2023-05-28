@@ -23,6 +23,8 @@ public class Empresa {
 	private Long id;
 	@NotBlank
 	private String nome;
+	@NotBlank
+	private String emailContato;
 	@OneToMany(mappedBy = "empresa", cascade = CascadeType.MERGE)
 	private Set<PlanoAssinatura> planos = new HashSet<>();
 	@OneToMany(mappedBy = "empresa", cascade = CascadeType.MERGE)
@@ -33,9 +35,10 @@ public class Empresa {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Empresa(@NotBlank String nome) {
+	public Empresa(@NotBlank String nome,@NotBlank String emailContato) {
 		super();
 		this.nome = nome;
+		this.emailContato = emailContato;
 	}
 
 	@Override
