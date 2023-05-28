@@ -102,13 +102,8 @@ public class Empresa {
 
 	
 	public void adicionaPessoaUsuaria(
-			Function<Empresa, PessoaUsuaria> funcaoCriadora,
-			PessoasUsuariasCadastradasNaEmpresa cadastros) {				
-		PessoaUsuaria novaPessoaUsuaria = funcaoCriadora.apply(this);
-		
-		Assert.isTrue(!cadastros.existeEmail(this.id,novaPessoaUsuaria.getEmail()),"Já existe o email cadastrado na empresa ["+this.nome+"]");
-		Assert.isTrue(!cadastros.existeCpf(this.id,novaPessoaUsuaria.getCpf()),"Já existe o cpf cadastrado na empresa ["+this.nome+"]");
-		
+			Function<Empresa, PessoaUsuaria> funcaoCriadora) {				
+		PessoaUsuaria novaPessoaUsuaria = funcaoCriadora.apply(this);				
 		Assert.isTrue(this.pessoasUsuarias.add(novaPessoaUsuaria),"Não foi possivel adicionar uma nova pessoa usuária para a empresa ["+this.nome+"] porque aparentemente já existe ou pessoa usuaria igual a ela");
 		
 	}

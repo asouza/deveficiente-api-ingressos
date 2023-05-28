@@ -13,14 +13,11 @@ import jakarta.validation.Valid;
 @RestController
 public class NovaPessoaUsuarioController {
 
-	private PessoaUsuariaRepository pessoaUsuariaRepository;
 	private EntityManager manager;
 
 	public NovaPessoaUsuarioController(
-			PessoaUsuariaRepository pessoaUsuariaRepository,
 			EntityManager manager) {
 		super();
-		this.pessoaUsuariaRepository = pessoaUsuariaRepository;
 		this.manager = manager;
 	}
 
@@ -29,8 +26,7 @@ public class NovaPessoaUsuarioController {
 	public void executa(@AuthenticatedPrincipal Empresa empresa,
 			@RequestBody @Valid NovaPessoaUsuariaRequest request) {
 
-		empresa.adicionaPessoaUsuaria(request::toModel,
-				pessoaUsuariaRepository);
+		empresa.adicionaPessoaUsuaria(request::toModel);
 		manager.merge(empresa);
 
 	}

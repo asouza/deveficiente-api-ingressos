@@ -24,6 +24,7 @@ public class PessoaUsuaria {
 	private @NotBlank String nome;
 	private @NotBlank @Email String email;
 	private @NotBlank @CPF String cpf;
+	private String senha;
 	
 	@Deprecated
 	public PessoaUsuaria() {
@@ -31,11 +32,12 @@ public class PessoaUsuaria {
 	}
 
 	public PessoaUsuaria(@NotNull @Valid Empresa empresa, @NotBlank String nome,
-			@NotBlank @Email String email, @NotBlank @CPF String cpf) {
+			@NotBlank @Email String email, @NotBlank @CPF String cpf,@NotNull @Valid SenhaLimpa senha) {
 				this.empresa = empresa;
 				this.nome = nome;
 				this.email = email;
 				this.cpf = cpf;
+				this.senha = senha.encodaBcrypt();
 	}
 
 	public String getEmail() {
