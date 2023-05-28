@@ -1,16 +1,12 @@
 package br.com.deveficiente.ingressos.empresas;
 
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
-import org.hibernate.annotations.Formula;
 import org.springframework.util.Assert;
 
 import br.com.deveficiente.ingressos.pessoasusuarias.PessoaUsuaria;
-import br.com.deveficiente.ingressos.pessoasusuarias.PessoasUsuariasCadastradasNaEmpresa;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -104,6 +100,11 @@ public class Empresa {
 	public void adicionaPessoaUsuaria(
 			Function<Empresa, PessoaUsuaria> funcaoCriadora) {				
 		PessoaUsuaria novaPessoaUsuaria = funcaoCriadora.apply(this);				
+		/*
+		 * #potencialProblema Se essa empresa tiver milhares de pessoas usuarias, 
+		 * tipo socio torcedor de um time de futebol, essa checagem vai carregar 
+		 * tudo isso para memoria. 
+		 */
 		Assert.isTrue(this.pessoasUsuarias.add(novaPessoaUsuaria),"Não foi possivel adicionar uma nova pessoa usuária para a empresa ["+this.nome+"] porque aparentemente já existe ou pessoa usuaria igual a ela");
 		
 	}
